@@ -20,9 +20,10 @@ y_train<-read.csv("UCI HAR Dataset/train/y_train.txt",header=FALSE,sep ="",col.n
 colnames(X_test)<-features$feature
 colnames(X_train)<-features$feature
 
-#Get only data on mean and stdev, the first 6 columns
-X_test<-X_test[,c(1:6)] 
-X_train<-X_train[,c(1:6)] 
+#Get only data on mean and stdev
+mean_std_indices<-grep("mean|std",features$feature)
+X_test<-X_test[,mean_std_indices] 
+X_train<-X_train[,mean_std_indices] 
 
 #Add column on subject# and activity
 X_test <-X_test %>%
@@ -37,17 +38,13 @@ X_train <- X_train%>%
 merged_data<-bind_rows(X_test,X_train)
 
 #Reoder data columns
-merged_data<-select(merged_data, c(7:8,1:6))
+col_len<-length(colnames(merged_data))
+merged_data<-select(merged_data, c((col_len-1):col_len,1:(col_len-2)))
 
 #Group data and measure mean
 measurements <- merged_data %>%
     group_by(activity,subject) %>%
-    summarize(mean_X = mean(`tBodyAcc-mean()-X`),
-            mean_Y = mean(`tBodyAcc-mean()-Y`),
-            mean_Z = mean(`tBodyAcc-mean()-Z`),
-            std_X = mean(`tBodyAcc-std()-X`),
-            std_Y = mean(`tBodyAcc-std()-Y`),
-            std_Z = mean(`tBodyAcc-std()-Z`)
-    )
+    summarise_all(.funs=mean)
 
+#Write output file on current working directory
 write.table(measurements, file = "output_data.txt",row.name=FALSE,sep = ",")
