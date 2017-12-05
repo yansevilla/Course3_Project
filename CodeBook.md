@@ -1,4 +1,15 @@
-The output tidy data set "output_data.txt" contains 8 variables:
+The raw data are processed following these procedures:
+1. Read the files. 
+2. Add appropriate column labels on X test/train.
+3. Get only data on mean and stdev measurements using grep.
+4. Add columns on subject# and activity
+5. Merge the 2 datasets using bind_rows.
+6. Reoder data columns, subject and activity columns first
+7. Group data by subject and activity, and measure means.
+8. Write output file on current working directory
+
+
+The output tidy data set "output_data.txt" contains the following variables:
 
 1. activity:  Links the class labels to the activity name which can be any of following:
         1 WALKING
@@ -10,14 +21,6 @@ The output tidy data set "output_data.txt" contains 8 variables:
 
 2. subject: Person(subject) unique id who participated in the experiment (1 to 30)
 
-3. mean_X: Average value of sensor signal 'tBodyAcc-mean()-X' according to activity and subject.
+3. mean_measurements: Average value of sensor signal measurement containing "mean" keyword and grouped according to activity and subject.
 
-4. mean_Y: Average value of sensor signal 'tBodyAcc-mean()-Y' according to activity and subject.
-
-5. mean_Z: Average value of sensor signal 'tBodyAcc-mean()-Z' according to activity and subject.
-
-6. std_X: Average value of sensor signal standard deviation 'tBodyAcc-std()-X' according to activity and subject. 
-
-7. std_Y: Average value of sensor signal standard deviation 'tBodyAcc-std()-Y' according to activity and subject. 
-
-8. std_Z: Average value of sensor signal standard deviation 'tBodyAcc-std()-Z' according to activity and subject. 
+4. std_measurements: Average value of sensor signal measurement containing "std" keyword and grouped according to activity and subject.
